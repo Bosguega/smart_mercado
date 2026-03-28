@@ -1,0 +1,12 @@
+{
+  "name": "Smart Mercado",
+  "short_name": "Smart Mercado",
+  "description": "Aplicativo para escanear e gerenciar notas fiscais de supermercado",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#22c55e",
+  "orientation": "portrait-primary",
+  "categories": ["shopping", "utilities"],
+  "lang": "pt-BR"
+}
