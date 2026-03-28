@@ -56,6 +56,33 @@ export function Scanner() {
             </CardContent>
           </Card>
 
+          <Card className="border-none">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg font-bold">Não consegue escanear?</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">
+                Se o QR Code estiver muito pequeno ou danificado, cole o link da nota fiscal abaixo.
+              </p>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="https://www.sefaz.rs.gov.br/..."
+                  className="flex-1 rounded-xl bg-black/5 dark:bg-white/5 border border-white/20 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all font-mono"
+                  onChange={(e) => setScannedCode(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleScan(scannedCode || '')}
+                />
+                <Button 
+                  size="sm" 
+                  className="px-6 font-bold"
+                  onClick={() => handleScan(scannedCode || '')}
+                >
+                  Confirmar
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
           {error && (
             <div className="glass-card border-red-500/30 bg-red-500/5 p-4 text-center text-red-600 font-bold animate-shake">
               ⚠️ {error}
@@ -99,12 +126,12 @@ export function Scanner() {
                     </div>
                   </div>
                   <div className="flex gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-green-500/10 text-green-600 text-xl shadow-sm">
-                      📏
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-500/10 text-purple-600 text-xl shadow-sm">
+                      🔗
                     </div>
                     <div>
-                      <p className="font-bold text-sm">Distância</p>
-                      <p className="text-xs text-muted-foreground">Tente aproximar ou afastar um pouco para ajudar no foco automático.</p>
+                      <p className="font-bold text-sm">Entrada Manual</p>
+                      <p className="text-xs text-muted-foreground">Cole o link da nota diretamente se o QR Code estiver ilegível.</p>
                     </div>
                   </div>
                 </div>

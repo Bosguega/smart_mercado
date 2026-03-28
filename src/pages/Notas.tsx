@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { useNotas, useDeletarNota } from '../hooks/useNotas'
+import { useNotas, useDeletarNota, useLimparNotas } from '../hooks/useNotas'
 import { Button } from '../components/ui/Button'
 import { Card, CardContent } from '../components/ui/Card'
 import { Loading } from '../components/ui/Loading'
@@ -9,10 +9,17 @@ export function Notas() {
   const navigate = useNavigate()
   const { data: notas, isLoading } = useNotas()
   const deletarNota = useDeletarNota()
+  const limparNotas = useLimparNotas()
 
   const handleDelete = async (id: string) => {
     if (confirm('Tem certeza que deseja deletar esta nota?')) {
       await deletarNota.mutateAsync(id)
+    }
+  }
+
+  const handleLimparTudo = async () => {
+    if (confirm('ATENÇÃO: Isso apagará TODO o seu histórico de compras. Deseja continuar?')) {
+      await limparNotas.mutateAsync()
     }
   }
 
@@ -26,11 +33,24 @@ export function Notas() {
             </Button>
             <h1 className="text-xl font-bold tracking-tight">Histórico</h1>
           </div>
-          <Link to="/scanner">
-            <Button size="sm" className="rounded-full px-4 text-xs font-bold uppercase tracking-widest">
-              📷 Escanear
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            {notas && notas.length > 0 && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={handleLimparTudo}
+                className="text-red-500 hover:bg-red-500/10 h-10 w-10 p-0 rounded-full"
+                title="Limpar Tudo"
+              >
+                🗑️
+              </Button>
+            )}
+            <Link to="/scanner">
+              <Button size="sm" className="rounded-full px-4 text-xs font-bold uppercase tracking-widest">
+                📷 Escanear
+              </Button>
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -103,25 +123,37 @@ export function Notas() {
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md">
-        <div className="glass shadow-2xl rounded-full px-8 py-3 flex items-center justify-between border border-white/30">
+      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-lg">
+        <div className="glass shadow-2xl rounded-full px-6 py-3 flex items-center justify-between border border-white/30">
           <Link to="/" className="flex flex-col items-center gap-1 group">
-            <div className="p-2 rounded-xl bg-transparent text-muted-foreground group-hover:scale-110 group-hover:text-primary-600 transition-all leading-none">
+            <div className="p-2 rounded-xl text-muted-foreground group-hover:scale-110 group-hover:text-primary-600 transition-all leading-none">
               🏠
             </div>
-            <span className="text-[10px] uppercase font-bold tracking-tighter text-muted-foreground group-hover:text-primary-600">Início</span>
-          </Link>
-          <Link to="/scanner" className="flex flex-col items-center gap-1 group scale-125 -translate-y-4">
-            <div className="p-4 rounded-full bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-xl shadow-primary-500/40 group-hover:scale-110 transition-all active:scale-95 leading-none">
-              📷
-            </div>
+            <span className="text-[9px] uppercase font-bold tracking-tighter text-muted-foreground group-hover:text-primary-600">Início</span>
           </Link>
           <Link to="/notas" className="flex flex-col items-center gap-1 group">
             <div className="p-2 rounded-xl bg-primary-500/10 text-primary-600 group-hover:scale-110 transition-transform leading-none shadow-inner">
               📋
             </div>
-            <span className="text-[10px] uppercase font-bold tracking-tighter text-primary-600">Notas</span>
+            <span className="text-[9px] uppercase font-bold tracking-tighter text-primary-600">Histórico</span>
           </Link>
+          <Link to="/scanner" className="flex flex-col items-center gap-1 group scale-110 -translate-y-4">
+            <div className="p-4 rounded-full bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-xl shadow-primary-500/40 group-hover:scale-110 transition-all active:scale-95 leading-none">
+              📷
+            </div>
+          </Link>
+          <Link to="/dicionario" className="flex flex-col items-center gap-1 group">
+            <div className="p-2 rounded-xl text-muted-foreground group-hover:scale-110 group-hover:text-primary-600 transition-all leading-none">
+              📚
+            </div>
+            <span className="text-[9px] uppercase font-bold tracking-tighter text-muted-foreground group-hover:text-primary-600">Dicionário</span>
+          </Link>
+          <div className="flex flex-col items-center gap-1 opacity-40 cursor-not-allowed">
+            <div className="p-2 rounded-xl text-muted-foreground leading-none">
+              ⚙️
+            </div>
+            <span className="text-[9px] uppercase font-bold tracking-tighter text-muted-foreground">Ajustes</span>
+          </div>
         </div>
       </nav>
     </div>

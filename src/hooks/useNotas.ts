@@ -62,7 +62,7 @@ export function useNota(id: string) {
 
       return data as NotaFiscal & { produtos: Produto[] }
     },
-    enabled: !!id,
+    enabled: !!id && id !== 'nova',
   })
 }
 
@@ -141,6 +141,33 @@ export function useDeletarNota() {
       }
 
       return id
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: notasKeys.lists() })
+    },
+  })
+}
+
+// Limpar todas as notas do usuário
+export function useLimparNotas() {
+  const queryClient = useQueryClient()
+  const { user } = useAuth()
+
+  return useMutation({
+    mutationFn: async () => {
+      if (!user) throw new Error('Usuário não autenticado')
+
+      const { error } = await supabase
+        .from('notas_fiscais')
+        .delete()
+        .eq('user_id', user.id)
+
+      if (error) {
+        console.error('Erro ao limpar notas:', error)
+        throw error
+      }
+
+      return true
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: notasKeys.lists() })

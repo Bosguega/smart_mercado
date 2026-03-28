@@ -8,6 +8,8 @@ import { Home } from './pages/Home'
 import { Scanner } from './pages/Scanner'
 import { Notas } from './pages/Notas'
 import { NotaDetalhe } from './pages/NotaDetalhe'
+import { NotaNova } from './pages/NotaNova'
+import { Dicionario } from './pages/Dicionario'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -85,10 +87,26 @@ function AppRoutes() {
         }
       />
       <Route
+        path="/dicionario"
+        element={
+          <ProtectedRoute>
+            <Dicionario />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/notas"
         element={
           <ProtectedRoute>
             <Notas />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/notas/nova"
+        element={
+          <ProtectedRoute>
+            <NotaNova />
           </ProtectedRoute>
         }
       />

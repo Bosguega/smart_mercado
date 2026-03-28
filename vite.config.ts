@@ -3,11 +3,14 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
-export default defineConfig({
-  base: '/smart_mercado/',
-  plugins: [
-    react(),
-    VitePWA({
+export default defineConfig(({ command }) => {
+  const isProd = command === 'build'
+  
+  return {
+    base: isProd ? '/smart_mercado/' : '/',
+    plugins: [
+      react(),
+      VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.png', 'apple-touch-icon.png', 'android-chrome-512x512.png'],
       manifest: {
@@ -59,4 +62,5 @@ export default defineConfig({
       }
     })
   ],
+  }
 })
