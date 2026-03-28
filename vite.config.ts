@@ -4,11 +4,12 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/smart_mercado/',
   plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      injectRegister: 'auto',
+      includeAssets: ['favicon.png', 'apple-touch-icon.png', 'android-chrome-512x512.png'],
       manifest: {
         name: 'Smart Mercado',
         short_name: 'SmartMercado',
